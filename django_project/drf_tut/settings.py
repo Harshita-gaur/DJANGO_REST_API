@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9mjlk47d&h!ejo*d(20tk&usyd(+3*09smr!vu$ni8yok*d2j$'
+SECRET_KEY = 'django-insecure-*m!%*&7o%%kb@+y$&mu(hw-0ad^_erae_p%rr75$iqf!1wfcu4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,11 +37,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+      # third party api services
+    'algoliasearch_django',
+    # third party packages
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+
+    # internal apps
+    'api',
+    'articles',
+    'products',
+    'search',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -50,6 +64,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'drf_tut.urls'
+CORS_URL_REGEX=r"^/api/.*"
+CORS_ALLOWED_ORIGINS=[
+    # 'https://localhost:8111',
+    # 'https://localhost:8000',
+    # 'https://www.codingforentrepreneurs.com'
+]
+if DEBUG:
+        CORS_ALLOWED_ORIGINS+=[
+            'https://localhost:8111',
+            # 'https://localhost:8000',
+    ]
 
 TEMPLATES = [
     {
@@ -121,3 +146,40 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# auth_classes=[
+#     "rest_framework.authentication.SessionAuthentication",
+#     "api.authentication.TokenAuthentication"
+# ]
+# if DEBUG:
+#     auth_classes=[
+#         "api.authentication.TokenAuthentication"
+#     ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+         "api.authentication.TokenAuthentication",
+         "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10
+}
+
+# environment variables -> django-dotenv -> reads .env
+ALGOLIA = {
+    'APPLICATION_ID': '68H08CSA3X',
+    'API_KEY': '279f412e21c41cdb8ce3ccf5c74eee01',
+    'INDEX_PREFIX': 'harshita'
+    
+}
+
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ["Bearer"],
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30), # minutes=5
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=1), # days=1
+}

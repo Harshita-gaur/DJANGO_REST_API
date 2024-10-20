@@ -1,4 +1,4 @@
-algoliasearch-django>=2.0,<3.0
+algoliasearch-django>=3.0,<4.0
 django>=5.0.0,<5.1.1
 djangorestframework
 djangorestframework-simplejwt

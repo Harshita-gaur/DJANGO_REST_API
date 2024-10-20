@@ -1,0 +1,50 @@
+open cmd 
+
+mkdir Django-Rest-Api
+cd Django-Rest-Api
+virtualenv drfvenv
+echo Your text goes here > requirements.txt
+.\drfvenv\Scripts\activate
+pip install -r requirements.txt
+mkdir py_client
+code .
+
+
+mkdir django_project
+cd django_project
+django-admin startproject drf_tut .
+django-admin startapp api
+django-admin startapp products 
+python manage.py makemigrations 
+python manage.py migrate 
+python manage.py shell
+from products.models import Product
+Product.objects.create(title='car',content='vehicle',price='90.00')
+Product.objects.all().order_by("?").first()
+Product.objects.last().sale_price
+
+python py_client\basic.py  %gives the source code of the endpoint
+% WEB API allows our application to work with other applications over the internet
+% JAVASCRIPT Object Notation- almost a python dictionary but also its not
+superuser: Harshita,harshita.gaur1007@gmail.com,SuperUser
+superuser: Super,harshita.gaur1007@gmail.com,harshita
+
+cd django_project
+python manage.py shell
+from rest_framework.authtoken.models import *
+locals()
+
+cd django_project
+python manage.py shell
+from products.models import Product
+>>> prod_obj=Product.objects.first()   
+>>> user=prod_obj.user
+>>> user_products=user.product_set.all()
+
+cd django_project
+python manage.py algolia_reindex
+
+
+cd js_client
+ python -m http.server 8111
+localhost:8111 -in the browser
