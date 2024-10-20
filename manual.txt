@@ -48,3 +48,11 @@ python manage.py algolia_reindex
 cd js_client
  python -m http.server 8111
 localhost:8111 -in the browser
+
+For pushing code into git
+git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/Harshita-gaur/DJANGO_REST_API.git
+git branch -M main
+git push -u origin main
